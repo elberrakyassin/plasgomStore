@@ -1,44 +1,74 @@
 # Almacén Industrial
 
-Aplicación de escritorio/híbrida para gestionar un almacén industrial con zonas, estanterías y productos.
+Aplicación para la gestión de un almacén industrial con zonas, ubicaciones y productos.
 
-## Características
+## Requisitos previos
 
-- **Zonas/Estanterías**: Crea estanterías con nombre, filas y columnas. Cada celda es una ubicación (ej: A, 2, 4).
-- **Productos**: Añade productos con nombre, cantidad (kg) y tipo. Cada producto se muestra como un cuadrado con color según su tipo.
-- **Tipos de producto** (colores):
-  - MP Activa (azul)
-  - MP Bloqueada (naranja)
-  - PA Conforme (verde)
-  - PA No Conforme (rojo)
-  - Desperdicio (marrón)
-  - El admin puede añadir más tipos personalizados.
-- **Drag & Drop**: Arrastra productos entre ubicaciones. Al soltar, la app pregunta cuántos kg mover.
-  - Si mueves todo el stock, el producto se elimina del origen.
-  - Si mueves parte, se crea un nuevo producto en destino y se resta en origen.
+- **Node.js** 18 o superior ([descargar](https://nodejs.org/))
+- **npm** (incluido con Node.js)
 
-## Ejecución
+## Instalación
 
-### Modo web (desarrollo rápido)
+1. **Clonar el repositorio**
+
+   ```bash
+   git clone https://github.com/elberrakyassin/plasgomStore.git
+   cd plasgomStore
+   ```
+
+2. **Instalar dependencias**
+
+   ```bash
+   npm install
+   ```
+
+## Levantar la aplicación
+
+### Modo web (recomendado)
+
+Ejecuta:
+
 ```bash
 npm run web
 ```
-Abre http://localhost:5173 en el navegador.
 
-### Modo Electron (app de escritorio)
+Se abrirá el navegador en `http://localhost:5173/`. Mantén la terminal abierta mientras usas la app.
+
+### Modo Electron (escritorio)
+
 ```bash
 npm run dev
 ```
 
-### Compilar para producción
-```bash
-npm run build
-npm run start
-```
+Se iniciará la aplicación en una ventana de escritorio. Asegúrate de tener Electron instalado correctamente.
+
+## Funcionalidades principales
+
+- **Zonas**: Crear zonas con filas y columnas (pestañas)
+- **Tipos de producto**: MP Activa, PA Conforme, etc. (colores distintos)
+- **Productos**: Arrastrar tipos a celdas, editar ID, nombre y kg
+- **Búsqueda**: Localizar productos por nombre
+- **Exportar datos**: PDF (impresión), CSV y JSON
+- **Persistencia**: Datos guardados en el navegador (localStorage)
+
+## Estructura de exportación
+
+- **PDF**: Ventana de impresión → elegir "Guardar como PDF"
+- **CSV**: Columnas `zona`, `fila`, `columna`, `producto_id`, `producto_nombre`, `tipo_producto`, `cantidad_kg`
+- **JSON**: Estructura con zonas, tipos de producto y productos en ubicaciones
 
 ## Tecnologías
 
 - React + TypeScript
 - Vite
-- Electron (para app de escritorio)
-- LocalStorage (persistencia)
+- Electron (opcional)
+- localStorage para persistencia
+
+## Scripts disponibles
+
+| Comando    | Descripción                     |
+| ---------- | ------------------------------- |
+| `npm run web` | App en el navegador (Vite)   |
+| `npm run dev` | App con Electron              |
+| `npm run build` | Build para producción        |
+| `npm run start` | Vista previa del build      |

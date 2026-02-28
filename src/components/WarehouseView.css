@@ -34,7 +34,7 @@
   background: #1e293b;
   border: 1px solid #334155;
   border-radius: 0.5rem 0.5rem 0 0;
-  cursor: pointer;
+  cursor: grab;
   color: #94a3b8;
   font-size: 0.95rem;
   transition: background 0.2s, color 0.2s;
@@ -50,6 +50,16 @@
   color: #e2e8f0;
   border-bottom-color: transparent;
   margin-bottom: -1px;
+}
+
+.zone-tab.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+.zone-tab.drop-target {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
 }
 
 .zone-tab-add {

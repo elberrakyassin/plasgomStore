@@ -3,7 +3,8 @@
   border-radius: 0.75rem;
   padding: 1rem;
   border: 1px solid #334155;
-  min-width: 180px;
+  width: fit-content;
+  max-width: 160px;
   flex-shrink: 0;
 }
 
