@@ -1,0 +1,157 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #1e293b;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  min-width: 360px;
+  max-width: 90vw;
+  border: 1px solid #334155;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.modal-wide {
+  min-width: 500px;
+}
+
+.modal h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.25rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #475569;
+  background: #0f172a;
+  color: #e2e8f0;
+  font-size: 1rem;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.form-group input[type="color"] {
+  height: 40px;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.form-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-radio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.form-radio input {
+  width: auto;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-hint {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  margin: 0 0 1rem 0;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.move-info {
+  margin: 0 0 0.5rem 0;
+}
+
+.move-max {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  margin: 0 0 1rem 0;
+}
+
+.product-types-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.product-type-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  background: #0f172a;
+  border-radius: 0.5rem;
+}
+
+.product-type-color {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+}
+
+.product-type-name {
+  flex: 1;
+}
+
+.btn-remove {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0 0.25rem;
+}
+
+.btn-remove:hover {
+  color: #ef4444;
+}
+
+.add-type-form {
+  padding-top: 1rem;
+  border-top: 1px solid #334155;
+}
+
+.add-type-form h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+}

@@ -1,0 +1,49 @@
+.search-results {
+  margin-top: 1rem;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.search-hint,
+.search-empty {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  margin: 1rem 0;
+}
+
+.search-result-item {
+  background: #0f172a;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid #334155;
+}
+
+.search-result-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.search-result-type {
+  flex: 1;
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+.search-result-total {
+  font-weight: 600;
+  color: #3b82f6;
+}
+
+.search-result-locations {
+  margin: 0;
+  padding-left: 1.25rem;
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}
+
+.search-result-locations li {
+  margin: 0.25rem 0;
+}

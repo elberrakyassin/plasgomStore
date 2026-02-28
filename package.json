@@ -1,0 +1,28 @@
+{
+  "name": "almacen-industrial",
+  "version": "1.0.0",
+  "description": "Gestión de almacén industrial con zonas, estanterías y productos",
+  "main": "./out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "start": "electron-vite preview",
+    "web": "vite"
+  },
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "jspdf": "^2.5.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "electron": "^28.0.0",
+    "electron-vite": "^2.0.0",
+    "typescript": "^5.3.0",
+    "vite": "^5.0.0"
+  }
+}

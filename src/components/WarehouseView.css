@@ -1,0 +1,205 @@
+.warehouse-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  color: #94a3b8;
+  font-size: 1.1rem;
+}
+
+.warehouse-dashboard {
+  display: flex;
+  gap: 1.5rem;
+  flex: 1;
+  min-height: 0;
+}
+
+.warehouse-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.zone-tabs {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.5rem 0;
+  flex-shrink: 0;
+  border-bottom: 1px solid #334155;
+}
+
+.zone-tab {
+  padding: 0.5rem 1rem;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 0.5rem 0.5rem 0 0;
+  cursor: pointer;
+  color: #94a3b8;
+  font-size: 0.95rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.zone-tab:hover {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+.zone-tab.active {
+  background: #334155;
+  color: #e2e8f0;
+  border-bottom-color: transparent;
+  margin-bottom: -1px;
+}
+
+.zone-tab-add {
+  color: #3b82f6;
+  font-weight: bold;
+}
+
+.zone-tab-add:hover {
+  color: #60a5fa;
+}
+
+.zone-content {
+  flex: 1;
+  overflow: auto;
+  padding: 1rem 0;
+}
+
+.zone-grid-container {
+  background: #1e293b;
+  border-radius: 0.75rem;
+  border: 1px solid #334155;
+  padding: 1rem;
+}
+
+.zone-grid-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.zone-grid-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.zone-dimensions {
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.btn-remove-zone {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.btn-remove-zone:hover {
+  color: #ef4444;
+}
+
+.zone-grid {
+  display: grid;
+  gap: 4px;
+  min-height: 200px;
+}
+
+.location-cell {
+  min-width: 80px;
+  min-height: 70px;
+  background: #0f172a;
+  border: 2px solid #334155;
+  border-radius: 0.5rem;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.location-cell.drag-over {
+  border-color: #3b82f6;
+  background: #1e3a5f;
+}
+
+.location-label {
+  font-size: 0.65rem;
+  color: #64748b;
+  margin-bottom: 2px;
+}
+
+.location-products {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-content: flex-start;
+}
+
+.product-box {
+  position: relative;
+  width: 100%;
+  min-height: 36px;
+  border-radius: 8px;
+  padding: 4px 8px;
+  cursor: grab;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-size: 0.8rem;
+  transition: transform 0.15s;
+}
+
+.product-box-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8rem;
+  color: #e2e8f0;
+  white-space: nowrap;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+.product-box-tooltip div {
+  margin: 0.15rem 0;
+}
+
+.product-box:hover {
+  transform: scale(1.02);
+}
+
+.product-box:active {
+  cursor: grabbing;
+}
+
+.product-box.dragging {
+  opacity: 0.7;
+}
+
+.product-name {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-qty {
+  font-size: 0.7rem;
+  opacity: 0.95;
+}
