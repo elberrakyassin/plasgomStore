@@ -1,11 +1,12 @@
 import { v4 as uuidv4 } from 'uuid'
-import type { Product, ProductType, Zone, Location, ProductAtLocation } from './types'
+import type { Product, ProductType, Zone, Location, ProductAtLocation, Transaction } from './types'
 
 const STORAGE_KEYS = {
   ZONES: 'almacen_zones',
   SHELVES: 'almacen_shelves', // legacy
   PRODUCTS: 'almacen_products',
-  PRODUCT_TYPES: 'almacen_product_types'
+  PRODUCT_TYPES: 'almacen_product_types',
+  TRANSACTIONS: 'almacen_transactions'
 }
 
 // Tipos de producto predefinidos
@@ -105,14 +106,97 @@ export function reorderZones(zoneIds: string[]): void {
   notify()
 }
 
+export function isZoneEmpty(zoneName: string): boolean {
+  return !getProductsAtLocations().some(p => p.location.zoneName === zoneName)
+}
+
+function isRowEmpty(zoneName: string, row: number, columns: number): boolean {
+  const products = getProductsAtLocations()
+  for (let col = 1; col <= columns; col++) {
+    if (products.some(p => p.location.zoneName === zoneName && p.location.row === row && p.location.column === col)) {
+      return false
+    }
+  }
+  return true
+}
+
+function isColumnEmpty(zoneName: string, column: number, rows: number): boolean {
+  const products = getProductsAtLocations()
+  for (let row = 1; row <= rows; row++) {
+    if (products.some(p => p.location.zoneName === zoneName && p.location.row === row && p.location.column === column)) {
+      return false
+    }
+  }
+  return true
+}
+
+export function canRemoveLastRow(zoneId: string): boolean {
+  const z = getZones().find(x => x.id === zoneId)
+  if (!z || z.rows <= 1) return false
+  // Solo se puede quitar la fila superior si está vacía
+  return isRowEmpty(z.name, z.rows, z.columns)
+}
+
+export function canRemoveLastColumn(zoneId: string): boolean {
+  const z = getZones().find(x => x.id === zoneId)
+  if (!z || z.columns <= 1) return false
+  // Solo se puede quitar la columna derecha (última) si está vacía
+  return isColumnEmpty(z.name, z.columns, z.rows)
+}
+
+export function addZoneRow(zoneId: string): boolean {
+  const zones = getZones()
+  const z = zones.find(x => x.id === zoneId)
+  if (!z) return false
+  z.rows += 1
+  saveToStorage(STORAGE_KEYS.ZONES, zones)
+  notify()
+  return true
+}
+
+export function addZoneColumn(zoneId: string): boolean {
+  const zones = getZones()
+  const z = zones.find(x => x.id === zoneId)
+  if (!z) return false
+  z.columns += 1
+  saveToStorage(STORAGE_KEYS.ZONES, zones)
+  notify()
+  return true
+}
+
+export function removeZoneRow(zoneId: string): boolean {
+  const zones = getZones()
+  const z = zones.find(x => x.id === zoneId)
+  if (!z || z.rows <= 1) return false
+  if (!canRemoveLastRow(zoneId)) return false
+
+  // Quitar fila superior: solo reducir filas, sin renumerar
+  z.rows -= 1
+  saveToStorage(STORAGE_KEYS.ZONES, zones)
+  notify()
+  return true
+}
+
+export function removeZoneColumn(zoneId: string): boolean {
+  const zones = getZones()
+  const z = zones.find(x => x.id === zoneId)
+  if (!z || z.columns <= 1) return false
+  if (!canRemoveLastColumn(zoneId)) return false
+
+  // Quitar columna derecha (última): solo reducir columnas, sin renumerar
+  z.columns -= 1
+  saveToStorage(STORAGE_KEYS.ZONES, zones)
+  notify()
+  return true
+}
+
 // Product types
 export function getProductTypes(): ProductType[] {
-  const stored = loadFromStorage<ProductType[]>(STORAGE_KEYS.PRODUCT_TYPES, [])
-  if (stored.length === 0) {
+  if (localStorage.getItem(STORAGE_KEYS.PRODUCT_TYPES) === null) {
     saveToStorage(STORAGE_KEYS.PRODUCT_TYPES, DEFAULT_PRODUCT_TYPES)
     return DEFAULT_PRODUCT_TYPES
   }
-  return stored
+  return loadFromStorage<ProductType[]>(STORAGE_KEYS.PRODUCT_TYPES, [])
 }
 
 export function addProductType(name: string, color: string): ProductType {
@@ -129,9 +213,25 @@ export function addProductType(name: string, color: string): ProductType {
   return newType
 }
 
-export function removeProductType(id: string): void {
-  const types = getProductTypes().filter(t => !t.isDefault && t.id !== id)
+export function updateProductType(
+  id: string,
+  updates: { name?: string; color?: string }
+): ProductType | null {
+  const types = getProductTypes()
+  const idx = types.findIndex(t => t.id === id)
+  if (idx < 0) return null
+  if (updates.name !== undefined) types[idx] = { ...types[idx], name: updates.name.trim() }
+  if (updates.color !== undefined) types[idx] = { ...types[idx], color: updates.color }
   saveToStorage(STORAGE_KEYS.PRODUCT_TYPES, types)
+  notify()
+  return types[idx]
+}
+
+export function removeProductType(id: string): void {
+  const types = getProductTypes().filter(t => t.id !== id)
+  const products = getProductsAtLocations().filter(p => p.product.productTypeId !== id)
+  saveToStorage(STORAGE_KEYS.PRODUCT_TYPES, types)
+  setProductsAtLocations(products)
   notify()
 }
 
@@ -177,6 +277,19 @@ export function addProductToLocation(
     data.push({ product: newProduct, location })
   }
   setProductsAtLocations(data)
+
+  const tx: Transaction = {
+    id: uuidv4(),
+    timestamp: new Date().toISOString(),
+    fromLocation: { zoneName: 'PALETA', row: 0, column: 0 },
+    toLocation: { ...location },
+    productId: newProduct.id,
+    productName: newProduct.name,
+    productTypeId: newProduct.productTypeId,
+    quantityKg: newProduct.quantityKg
+  }
+  addTransaction(tx)
+
   return existingIdx >= 0 ? data[existingIdx].product : newProduct
 }
 
@@ -230,6 +343,69 @@ export function moveProduct(
     })
   }
   setProductsAtLocations(data)
+
+  const tx: Transaction = {
+    id: uuidv4(),
+    timestamp: new Date().toISOString(),
+    fromLocation: { ...fromLocation },
+    toLocation: { ...toLocation },
+    productId: product.id,
+    productName: product.name,
+    productTypeId: product.productTypeId,
+    quantityKg: kgToMove
+  }
+  addTransaction(tx)
+}
+
+function getTransactionsRaw(): Transaction[] {
+  return loadFromStorage<Transaction[]>(STORAGE_KEYS.TRANSACTIONS, [])
+}
+
+function saveTransactions(data: Transaction[]): void {
+  saveToStorage(STORAGE_KEYS.TRANSACTIONS, data)
+}
+
+function addTransaction(tx: Transaction): void {
+  const data = getTransactionsRaw()
+  data.unshift(tx)
+  saveTransactions(data)
+  notify()
+}
+
+export function getTransactions(): Transaction[] {
+  return [...getTransactionsRaw()]
+}
+
+export interface TransactionSearchFilters {
+  dateFrom?: string // YYYY-MM-DD
+  dateTo?: string
+  productId?: string
+  productName?: string
+}
+
+export function searchTransactions(filters: TransactionSearchFilters): Transaction[] {
+  let result = getTransactionsRaw()
+  if (filters.dateFrom) {
+    const from = filters.dateFrom
+    result = result.filter(t => t.timestamp.slice(0, 10) >= from)
+  }
+  if (filters.dateTo) {
+    const to = filters.dateTo
+    result = result.filter(t => t.timestamp.slice(0, 10) <= to)
+  }
+  if (filters.productId?.trim()) {
+    const q = filters.productId.trim().toLowerCase()
+    result = result.filter(t => t.productId.toLowerCase().includes(q))
+  }
+  if (filters.productName?.trim()) {
+    const q = filters.productName.trim().toLowerCase()
+    result = result.filter(t => t.productName.toLowerCase().includes(q))
+  }
+  return result
+}
+
+export function getTransactionById(id: string): Transaction | null {
+  return getTransactionsRaw().find(t => t.id === id) ?? null
 }
 
 export function getProductsAtLocation(location: Location): Product[] {

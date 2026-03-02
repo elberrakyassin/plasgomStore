@@ -1,0 +1,173 @@
+.modal-tall {
+  max-height: calc(100vh - 80px);
+  max-height: calc(100dvh - 80px);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.tx-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tx-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  flex: 1;
+}
+
+.tx-filter-row .form-group {
+  margin-bottom: 0;
+  min-width: 140px;
+}
+
+.tx-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tx-count {
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.tx-content {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 1.5rem;
+  flex: 1;
+  min-height: 300px;
+  overflow: hidden;
+}
+
+.tx-list {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.tx-list-ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.tx-list-item {
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin-bottom: 0.25rem;
+  background: #0f172a;
+  border: 1px solid transparent;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.tx-list-item:hover {
+  background: #1e293b;
+}
+
+.tx-list-item.selected {
+  border-color: #3b82f6;
+  background: #1e3a5f;
+}
+
+.tx-list-date {
+  display: block;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin-bottom: 0.2rem;
+}
+
+.tx-list-product {
+  font-weight: 600;
+  display: block;
+}
+
+.tx-list-qty {
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.tx-list-route {
+  display: block;
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 0.2rem;
+}
+
+.tx-empty {
+  color: #94a3b8;
+  text-align: center;
+  padding: 2rem;
+}
+
+.tx-pagination {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  flex-shrink: 0;
+}
+
+.tx-detail {
+  background: #0f172a;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  border: 1px solid #334155;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.tx-detail h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+}
+
+.tx-detail-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tx-detail-row {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.tx-detail-label {
+  font-weight: 600;
+  color: #94a3b8;
+  min-width: 90px;
+}
+
+.tx-detail-value.mono {
+  font-family: monospace;
+  font-size: 0.8rem;
+  word-break: break-all;
+}
+
+.tx-detail-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tx-detail-empty {
+  color: #94a3b8;
+  text-align: center;
+  padding: 2rem;
+}

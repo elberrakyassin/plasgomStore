@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react'
 import './Modal.css'
-import { getProductTypes, addProductType, removeProductType, subscribe } from '../store'
+import {
+  getProductTypes,
+  addProductType,
+  updateProductType,
+  removeProductType,
+  subscribe
+} from '../store'
 import type { ProductType } from '../types'
 
 interface ProductTypesAdminProps {
@@ -11,6 +17,9 @@ export function ProductTypesAdmin({ onClose }: ProductTypesAdminProps) {
   const [types, setTypes] = useState<ProductType[]>([])
   const [newName, setNewName] = useState('')
   const [newColor, setNewColor] = useState('#64748b')
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [editName, setEditName] = useState('')
+  const [editColor, setEditColor] = useState('')
 
   useEffect(() => {
     const refresh = () => setTypes([...getProductTypes()])
@@ -27,12 +36,36 @@ export function ProductTypesAdmin({ onClose }: ProductTypesAdminProps) {
     setNewColor('#64748b')
   }
 
+  const startEdit = (t: ProductType) => {
+    setEditingId(t.id)
+    setEditName(t.name)
+    setEditColor(t.color)
+  }
+
+  const saveEdit = () => {
+    if (!editingId) return
+    const trimmed = editName.trim()
+    if (!trimmed) return
+    updateProductType(editingId, { name: trimmed, color: editColor })
+    setEditingId(null)
+  }
+
+  const cancelEdit = () => {
+    setEditingId(null)
+  }
+
+  const handleRemove = (t: ProductType) => {
+    if (window.confirm(`¿Eliminar "${t.name}"? Los productos con este tipo también se eliminarán.`)) {
+      removeProductType(t.id)
+    }
+  }
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal modal-wide" onClick={e => e.stopPropagation()}>
         <h2>Tipos de producto</h2>
         <p className="form-hint">
-          Los tipos predefinidos (MP Activa, MP Bloqueada, etc.) no se pueden eliminar.
+          Puedes crear, editar y eliminar todos los tipos. Al eliminar, se borran también los productos de ese tipo.
         </p>
 
         <div className="product-types-list">
@@ -42,16 +75,64 @@ export function ProductTypesAdmin({ onClose }: ProductTypesAdminProps) {
                 className="product-type-color"
                 style={{ backgroundColor: t.color }}
               />
-              <span className="product-type-name">{t.name}</span>
-              {!t.isDefault && (
-                <button
-                  type="button"
-                  className="btn-remove"
-                  onClick={() => removeProductType(t.id)}
-                  title="Eliminar tipo"
-                >
-                  ×
-                </button>
+              {editingId === t.id ? (
+                <>
+                  <input
+                    type="text"
+                    className="product-type-edit-input"
+                    value={editName}
+                    onChange={e => setEditName(e.target.value)}
+                    placeholder="Nombre"
+                  />
+                  <input
+                    type="color"
+                    className="product-type-edit-color"
+                    value={editColor}
+                    onChange={e => setEditColor(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-small btn-primary"
+                    onClick={saveEdit}
+                    title="Guardar"
+                  >
+                    ✓
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-small btn-secondary"
+                    onClick={cancelEdit}
+                    title="Cancelar"
+                  >
+                    ✕
+                  </button>
+                </>
+              ) : (
+                <>
+                  <span
+                    className="product-type-name product-type-name-clickable"
+                    onClick={() => startEdit(t)}
+                    title="Clic para editar"
+                  >
+                    {t.name}
+                  </span>
+                  <button
+                    type="button"
+                    className="btn-edit"
+                    onClick={() => startEdit(t)}
+                    title="Editar"
+                  >
+                    ✎
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-remove"
+                    onClick={() => handleRemove(t)}
+                    title="Eliminar tipo"
+                  >
+                    ×
+                  </button>
+                </>
               )}
             </div>
           ))}

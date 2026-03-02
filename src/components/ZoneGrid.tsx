@@ -1,6 +1,15 @@
 import { useState } from 'react'
 import { Zone, Location } from '../types'
-import { getProductsAtLocation, removeZone } from '../store'
+import {
+  getProductsAtLocation,
+  removeZone,
+  canRemoveLastRow,
+  canRemoveLastColumn,
+  addZoneRow,
+  addZoneColumn,
+  removeZoneRow,
+  removeZoneColumn
+} from '../store'
 import { LocationCell } from './LocationCell'
 import { MoveProductModal } from './MoveProductModal'
 import type { Product } from '../types'
@@ -51,6 +60,46 @@ export function ZoneGrid({ zone }: ZoneGridProps) {
         <span className="zone-dimensions">
           {zone.rows} filas × {zone.columns} columnas
         </span>
+        <div className="zone-edit-controls">
+          <div className="zone-edit-group" title="Añadir o quitar filas">
+            <button
+              type="button"
+              className="btn-zone-edit"
+              onClick={() => addZoneRow(zone.id)}
+              title="Añadir fila"
+            >
+              + Fila
+            </button>
+            <button
+              type="button"
+              className="btn-zone-edit"
+              disabled={zone.rows <= 1 || !canRemoveLastRow(zone.id)}
+              onClick={() => removeZoneRow(zone.id)}
+              title={!canRemoveLastRow(zone.id) ? 'La fila superior debe estar vacía' : 'Quitar fila superior'}
+            >
+              − Fila
+            </button>
+          </div>
+          <div className="zone-edit-group" title="Añadir o quitar columnas">
+            <button
+              type="button"
+              className="btn-zone-edit"
+              onClick={() => addZoneColumn(zone.id)}
+              title="Añadir columna"
+            >
+              + Col
+            </button>
+            <button
+              type="button"
+              className="btn-zone-edit"
+              disabled={zone.columns <= 1 || !canRemoveLastColumn(zone.id)}
+              onClick={() => removeZoneColumn(zone.id)}
+              title={!canRemoveLastColumn(zone.id) ? 'La columna derecha debe estar vacía' : 'Quitar última columna'}
+            >
+              − Col
+            </button>
+          </div>
+        </div>
         <button onClick={handleRemove} className="btn-remove-zone" title="Eliminar zona">
           × Eliminar zona
         </button>

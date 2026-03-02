@@ -6,6 +6,8 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  padding: 24px;
+  box-sizing: border-box;
 }
 
 .modal {
@@ -20,6 +22,62 @@
 
 .modal-wide {
   min-width: 500px;
+}
+
+.modal-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.modal-header-row h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.modal-close-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 0.375rem;
+}
+
+.modal-close-btn:hover {
+  color: #e2e8f0;
+  background: #334155;
+}
+
+.modal-close-btn-large {
+  font-size: 1.75rem;
+  padding: 0.35rem 0.5rem;
+  font-weight: 300;
+}
+
+.modal-close-x {
+  background: #334155;
+  border: none;
+  color: #e2e8f0;
+  font-size: 1.5rem;
+  line-height: 1;
+  width: 36px;
+  height: 36px;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.modal-close-x:hover {
+  background: #475569;
+  color: white;
 }
 
 .modal h2 {
@@ -131,6 +189,51 @@
 
 .product-type-name {
   flex: 1;
+}
+
+.product-type-name-clickable {
+  cursor: pointer;
+}
+
+.product-type-name-clickable:hover {
+  text-decoration: underline;
+}
+
+.product-type-edit-input {
+  flex: 1;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  border: 1px solid #475569;
+  background: #0f172a;
+  color: #e2e8f0;
+  font-size: 0.95rem;
+}
+
+.product-type-edit-color {
+  width: 28px;
+  height: 28px;
+  padding: 2px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-edit {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0 0.25rem;
+}
+
+.btn-edit:hover {
+  color: #3b82f6;
+}
+
+.btn-small {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.85rem;
 }
 
 .btn-remove {

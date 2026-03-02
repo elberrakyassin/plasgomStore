@@ -23,7 +23,18 @@ export function SearchProducts({ onClose }: SearchProductsProps) {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal modal-wide" onClick={e => e.stopPropagation()}>
-        <h2>Buscar productos</h2>
+        <div className="modal-header-row">
+          <h2>Buscar productos</h2>
+          <button
+            type="button"
+            className="modal-close-x"
+            onClick={onClose}
+            title="Cerrar"
+            aria-label="Cerrar"
+          >
+            ×
+          </button>
+        </div>
         <div className="form-group">
           <label>Nombre del producto</label>
           <input

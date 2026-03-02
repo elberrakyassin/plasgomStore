@@ -6,6 +6,7 @@ import { ProductTypesAdmin } from './components/ProductTypesAdmin'
 import { AddProductModal } from './components/AddProductModal'
 import { SearchProducts } from './components/SearchProducts'
 import { ExportPdfModal } from './components/ExportPdfModal'
+import { TransactionsModal } from './components/TransactionsModal'
 import type { Zone, ProductType } from './types'
 import './App.css'
 
@@ -17,6 +18,7 @@ function App() {
   const [showAddProduct, setShowAddProduct] = useState(false)
   const [showSearch, setShowSearch] = useState(false)
   const [showExportPdf, setShowExportPdf] = useState(false)
+  const [showTransactions, setShowTransactions] = useState(false)
 
   useEffect(() => {
     const refresh = () => {
@@ -47,6 +49,9 @@ function App() {
           <button onClick={() => setShowExportPdf(true)} className="btn btn-secondary">
             Exportar datos
           </button>
+          <button onClick={() => setShowTransactions(true)} className="btn btn-secondary">
+            Transacciones
+          </button>
         </div>
       </header>
 
@@ -68,6 +73,9 @@ function App() {
       )}
       {showExportPdf && (
         <ExportPdfModal onClose={() => setShowExportPdf(false)} />
+      )}
+      {showTransactions && (
+        <TransactionsModal onClose={() => setShowTransactions(false)} />
       )}
     </div>
   )

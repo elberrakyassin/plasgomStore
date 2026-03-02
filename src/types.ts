@@ -38,3 +38,14 @@ export interface ProductAtLocation {
   product: Product
   location: Location
 }
+
+export interface Transaction {
+  id: string
+  timestamp: string // ISO string
+  fromLocation: Location
+  toLocation: Location
+  productId: string
+  productName: string
+  productTypeId: string
+  quantityKg: number
+}
